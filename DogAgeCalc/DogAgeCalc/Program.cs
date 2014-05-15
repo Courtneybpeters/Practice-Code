@@ -17,6 +17,7 @@ namespace DogAgeCalc
             int dogAge = humanAge * 7;
             Console.Write(String.Format("Your dog's age is: {0} in dog years.", dogAge));
             Console.ReadKey();
+            
         }
     }
 }
