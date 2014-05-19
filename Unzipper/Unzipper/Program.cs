@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using SharpCompress;
+using SharpCompress.Archive;
+using SharpCompress.Common;
 
 namespace Unzipper
 {
@@ -14,7 +16,7 @@ namespace Unzipper
         {   
             // Receive folder location and assign 
             Console.WriteLine("Please enter the starting folder path: ");
-            string startingFolder = @"C:\Users\court_000\Documents\testcsharp";
+            string startingFolder = @".\tests";
             string unzipFolder = System.IO.Path.Combine(startingFolder, "Unzipped");
             System.IO.Directory.CreateDirectory(unzipFolder);
 
@@ -22,10 +24,12 @@ namespace Unzipper
             System.IO.DirectoryInfo dirInfo = new System.IO.DirectoryInfo(startingFolder);
 
             // Grabs all the searched for files
-            foreach (FileInfo files in dirInfo.GetFiles("*.zip", SearchOption.AllDirectories))
+            foreach (FileInfo file in dirInfo.GetFiles("*.zip", SearchOption.AllDirectories))
             {
-                Stream file = new FileStream(startingFolder, FileMode.Open);
+                //Stream file = new FileStream(startingFolder, FileMode.Open);
 
+                // Unzip files
+                Utils.Extract(file.FullName, unzipFolder);
             }
 
             Console.ReadKey();
