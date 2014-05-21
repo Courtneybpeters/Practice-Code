@@ -16,23 +16,42 @@ namespace Unzipper
         {   
             // Receive folder location and assign 
             Console.WriteLine("Please enter the starting folder path: ");
-            string startingFolder = @".\tests";
+            string startingFolder = @"C:\Users\court_000\Documents\testcsharp\CSharp";
             string unzipFolder = System.IO.Path.Combine(startingFolder, "Unzipped");
             System.IO.Directory.CreateDirectory(unzipFolder);
 
-            // Get the info of that directory
+            // Create Directory Info objects of both beginning and ending folders
             System.IO.DirectoryInfo dirInfo = new System.IO.DirectoryInfo(startingFolder);
+            System.IO.DirectoryInfo endDirInfo = new System.IO.DirectoryInfo(unzipFolder);
 
-            // Grabs all the searched for files
-            foreach (FileInfo file in dirInfo.GetFiles("*.zip", SearchOption.AllDirectories))
+            // Filters only zip files within the top directory and extracts them.
+            foreach (FileInfo file in dirInfo.GetFiles("*", SearchOption.AllDirectories))
             {
-                //Stream file = new FileStream(startingFolder, FileMode.Open);
+                if (file.Extension == ".zip" || file.Extension == ".rar")
+                    Utils.Extract(file.FullName, unzipFolder);
 
-                // Unzip files
-                Utils.Extract(file.FullName, unzipFolder);
             }
 
-            Console.ReadKey();
+            //Checking unzipped folder for any rar's in the previous zips - make method later?
+            foreach (FileInfo file in endDirInfo.GetFiles("*.rar", SearchOption.AllDirectories))
+            {
+                Utils.Extract(file.FullName, unzipFolder);
+                
+            }
+
+            // Trying to delete everything but the final book files
+            foreach (FileInfo file in endDirInfo.GetFiles())
+            {
+                if (file.Extension != ".pdf" && file.Extension != ".epub")
+                {
+                    file.Delete();
+                }
+
+            }
+
+            Console.ReadLine();
+
+            
 
             
 

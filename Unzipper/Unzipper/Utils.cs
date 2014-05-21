@@ -12,12 +12,14 @@ namespace Unzipper
     {
         public static void Extract(string archivePath, string destPath)
         {
-            var archive = ArchiveFactory.Open(archivePath);
-            foreach (var entry in archive.Entries)
+            using (var archive = ArchiveFactory.Open(archivePath))
             {
-                if (!entry.IsDirectory)
+                foreach (var entry in archive.Entries)
                 {
-                    entry.WriteToDirectory(destPath, ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                    if (!entry.IsDirectory)
+                    {
+                        entry.WriteToDirectory(destPath, ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                    }
                 }
             }
         }
